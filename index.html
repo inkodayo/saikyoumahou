@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>最強魔法使いに転生しましたけど魔法をひとつも知らないのですが？</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --panel-color: #16213e;
+            --accent-color: #4ecca3;
+            --text-color: #e94560;
+            --gold: #fbc531;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+            overflow-x: hidden;
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(145deg, #16213e, #0f3460);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 1.1rem;
+            color: var(--gold);
+            text-align: center;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .scene { display: none; }
+        .active { display: block; }
+
+        .story-text {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .log-area {
+            background: #000;
+            height: 180px;
+            overflow-y: auto;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            border: 1px inset var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .current-input-display {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+            min-height: 45px;
+        }
+
+        .spell-token {
+            background: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            animation: pop 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 50px;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); }
+            100% { transform: scale(1); }
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            min-height: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: 0.1s;
+        }
+
+        button:active { transform: scale(0.95); opacity: 0.8; }
+
+        .spell-btn { background: #533483; }
+        .control-btn { background: #2c3e50; }
+        .action-btn { 
+            background: var(--accent-color); 
+            color: #000; 
+            width: 100%;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .finish-btn {
+            background: var(--gold);
+            color: #000;
+            margin-top: 5px;
+        }
+
+        .trial-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .ending-text {
+            font-size: 1.1rem;
+            text-align: center;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+
+        .final-phase-header {
+            color: var(--gold);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 1px solid var(--gold);
+            padding: 5px;
+        }
+
+        .target-hint {
+            font-size: 0.8rem;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        #end-detail-area {
+            text-align: left;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: monospace;
+            border-top: 1px dashed var(--gold);
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="scene-start" class="scene active">
+        <h1>最強魔法使いに転生しましたけど<br>魔法をひとつも知らないのですが？</h1>
+        <div class="story-text">
+            あなたは伝説の魔法使いとして異世界に転生しました。<br>
+            しかし神様のミスで魔法の記憶をすべて失ってしまいました。<br>
+            王様から「不老不死の魔法」を命じられ、失敗すれば処刑です。<br><br>
+            この世界の魔法は<br>
+            <b>「ぽこ」「ちん」「おっ」「ぱい」</b><br>
+            の4単語を3つ組み合わせるだけで唱えられます。<br><br>
+            そして不老不死の魔法は強い魔力を使い以下の3つの魔法を組み合わせることで唱えられます。：<br>
+            ・寿命を超越する魔法<br>
+            ・無限自己回復の魔法<br>
+            ・老いを無くす魔法<br><br>
+            最大9回の実験で単語と位置が一致する数（寿命/回復/老い）を調べ、正しい不老不死の魔法を導き出してください。
+        </div>
+        <button class="action-btn" onclick="startGame()">実験を開始する</button>
+    </div>
+
+    <div id="scene-main" class="scene">
+        <div class="trial-count">残り実験回数: <span id="remaining-trials">9</span></div>
+        <div id="main-log" class="log-area"></div>
+        <div class="target-hint">3語の呪文を組み立てろ</div>
+        <div id="current-input" class="current-input-display"></div>
+        <div class="button-grid">
+            <button class="spell-btn" onclick="inputWord('ぽこ')">ぽこ</button>
+            <button class="spell-btn" onclick="inputWord('ちん')">ちん</button>
+            <button class="spell-btn" onclick="inputWord('おっ')">おっ</button>
+            <button class="spell-btn" onclick="inputWord('ぱい')">ぱい</button>
+            <button class="control-btn" style="grid-column: span 2;" onclick="backspace()">1つ消す</button>
+        </div>
+        <button id="cast-btn" class="action-btn" onclick="castSpell()">実験する (3語)</button>
+        <button class="action-btn finish-btn" onclick="goToFinal()">不老不死の魔法を献上する</button>
+    </div>
+
+    <div id="scene-final" class="scene">
+        <div class="final-phase-header">最終回答：合計9語を入力</div>
+        <div id="final-log" class="log-area"></div>
+        <div id="final-target-label" class="target-hint" style="color:var(--gold)">1.寿命を超越する魔法 を入力中...</div>
+        <div id="final-input" class="current-input-display" style="flex-wrap: wrap; height: auto;"></div>
+        <div class="button-grid">
+            <button class="spell-btn" onclick="inputWordFinal('ぽこ')">ぽこ</button>
+            <button class="spell-btn" onclick="inputWordFinal('ちん')">ちん</button>
+            <button class="spell-btn" onclick="inputWordFinal('おっ')">おっ</button>
+            <button class="spell-btn" onclick="inputWordFinal('ぱい')">ぱい</button>
+            <button class="control-btn" style="grid-column: span 2;" onclick="backspaceFinal()">1つ消す</button>
+        </div>
+        <button id="final-cast-btn" class="action-btn" onclick="submitFinal()">命を懸けて献上する</button>
+    </div>
+
+    <div id="scene-end" class="scene">
+        <h1 id="end-title">結末</h1>
+        <div id="end-message" class="ending-text"></div>
+        <div id="end-detail-area" style="display:none;"></div>
+        <button class="action-btn" onclick="location.reload()" style="margin-top:20px;">もう一度やり直す</button>
+    </div>
+</div>
+
+<script>
+    const WORDS = ["ぽこ", "ちん", "おっ", "ぱい"];
+    let answers = []; 
+    let currentInput = [];
+    let trialsLeft = 9; 
+    let usedTrials = 0;
+    let logs = [];
+
+    function startGame() {
+        generateAnswers();
+        showScene('scene-main');
+    }
+
+    function generateAnswers() {
+        answers = [];
+        while(answers.length < 3) {
+            let spell = [
+                WORDS[Math.floor(Math.random() * 4)],
+                WORDS[Math.floor(Math.random() * 4)],
+                WORDS[Math.floor(Math.random() * 4)]
+            ];
+            let spellStr = spell.join(',');
+            if(!answers.some(a => a.join(',') === spellStr)) {
+                answers.push(spell);
+            }
+        }
+    }
+
+    function showScene(id) {
+        document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function inputWord(w) {
+        if(currentInput.length < 3) {
+            currentInput.push(w);
+            updateInputDisplay('current-input', currentInput);
+        }
+    }
+
+    function backspace() {
+        currentInput.pop();
+        updateInputDisplay('current-input', currentInput);
+    }
+
+    function updateInputDisplay(id, list) {
+        const div = document.getElementById(id);
+        div.innerHTML = '';
+        list.forEach(w => {
+            const span = document.createElement('span');
+            span.className = 'spell-token';
+            span.textContent = w;
+            div.appendChild(span);
+        });
+    }
+
+    function castSpell() {
+        if(currentInput.length < 3) return;
+
+        let results = answers.map(ans => {
+            let matchCount = 0;
+            for(let i = 0; i < 3; i++) {
+                if(ans[i] === currentInput[i]) matchCount++;
+            }
+            return matchCount;
+        });
+
+        const logEntry = { input: [...currentInput], res: results };
+        logs.push(logEntry);
+        usedTrials++;
+        renderLog('main-log');
+        currentInput = [];
+        updateInputDisplay('current-input', currentInput);
+        trialsLeft--;
+        document.getElementById('remaining-trials').textContent = trialsLeft;
+        if(trialsLeft <= 0) goToFinal();
+    }
+
+    function goToFinal() {
+        renderLog('final-log');
+        showScene('scene-final');
+    }
+
+    function renderLog(targetId) {
+        const logArea = document.getElementById(targetId);
+        logArea.innerHTML = logs.map((l, i) => `
+            <div>実験${i+1}: ${l.input.join(' ')}</div>
+            <div style="color:var(--accent-color); margin-bottom:10px;">→ ${l.res[0]} / ${l.res[1]} / ${l.res[2]}</div>
+        `).join('');
+        logArea.scrollTop = logArea.scrollHeight;
+    }
+
+    let finalInput = [];
+    function inputWordFinal(w) {
+        if(finalInput.length < 9) {
+            finalInput.push(w);
+            updateInputDisplay('final-input', finalInput);
+            updateFinalLabel();
+        }
+    }
+
+    function backspaceFinal() {
+        finalInput.pop();
+        updateInputDisplay('final-input', finalInput);
+        updateFinalLabel();
+    }
+
+    function updateFinalLabel() {
+        const label = document.getElementById('final-target-label');
+        if(finalInput.length < 3) label.innerText = "1.寿命を超越する魔法 を入力中...";
+        else if(finalInput.length < 6) label.innerText = "2.無限自己回復の魔法 を入力中...";
+        else if(finalInput.length < 9) label.innerText = "3.老いを無くす魔法 を入力中...";
+        else label.innerText = "完成！命を懸けて献上しましょう";
+    }
+
+    async function submitFinal() {
+        if(finalInput.length < 9) return;
+        const p1 = finalInput.slice(0, 3);
+        const p2 = finalInput.slice(3, 6);
+        const p3 = finalInput.slice(6, 9);
+        const isCorrect = p1.join(',') === answers[0].join(',') &&
+                          p2.join(',') === answers[1].join(',') &&
+                          p3.join(',') === answers[2].join(',');
+
+        showScene('scene-end');
+        const msgArea = document.getElementById('end-message');
+        const detailArea = document.getElementById('end-detail-area');
+        msgArea.innerText = "";
+        
+        if(isCorrect) {
+            const lines = ["「おお！」", "「体が楽になったぞ」", "「やはりお主の力は素晴らしい！」", "「よくやった！」", `あなたは${usedTrials}回の試行でクリアできました！`, "\nHappy End"];
+            for(let line of lines) {
+                msgArea.innerText += line + "\n";
+                await new Promise(r => setTimeout(r, 800));
+            }
+        } else {
+            const lines = ["「…」", "「なにも起こらないぞ…？」", "「さてはお前、ワシを騙したな？」", "\nあなたは処刑されてしまった", "\nGame Over"];
+            for(let line of lines) {
+                msgArea.innerText += line + "\n";
+                await new Promise(r => setTimeout(r, 800));
+            }
+
+            detailArea.style.display = "block";
+            let logText = logs.map((l, i) => `実験${i+1}: ${l.input.join(' ')} -> ${l.res.join('/')}`).join('\n');
+            let yourAns = `寿命: ${p1.join(' ')}\n回復: ${p2.join(' ')}\n老い: ${p3.join(' ')}`;
+            let correctAns = `寿命: ${answers[0].join(' ')}\n回復: ${answers[1].join(' ')}\n老い: ${answers[2].join(' ')}`;
+            
+            detailArea.innerHTML = `
+                <br><br><br>
+                --- 記録照合 ---<br><br>
+                【実験ログ】<br>${logText || "なし"}<br><br>
+                【あなたの回答】<br>${yourAns}<br><br>
+                【真実の正解】<br>${correctAns}
+            `;
+        }
+    }
+</script>
+</body>
+</html>
